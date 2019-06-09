@@ -12,67 +12,34 @@ namespace StarWarsAPIPractice.Controllers
 {
     public class HomeController : Controller
     {
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
+        
         public ActionResult Index()
         {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Index(string peopleCount, int Id)
-        {
-            peopleCount = "https://swapi.co/api/";
+            string URL = $"https://swapi.co/api/people/3";
 
-            HttpWebRequest request = WebRequest.CreateHttp(peopleCount);
+            HttpWebRequest request = WebRequest.CreateHttp(URL);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             StreamReader rd = new StreamReader(response.GetResponseStream());
             string APIText = rd.ReadToEnd();
 
             JToken jsonpeopleCount = JToken.Parse(APIText);
 
-            int count = (int)jsonpeopleCount["count"];
-
-            if (Id < 1)
-            {
-                ViewBag.Message = "That person doesn't exist.";
-                    return View("Index");
-            }
-
-            string StarWarsURL = $"https://swapi.co/api/";
-
-            request = WebRequest.CreateHttp(StarWarsURL);
-            response = (HttpWebResponse)request.GetResponse();
-            rd = new StreamReader(response.GetResponseStream());
-            APIText = rd.ReadToEnd();
-
             JToken jsonSW = JToken.Parse(APIText);
             FilmEndpoints f = new FilmEndpoints();
 
-            f.People = jsonSW["people"].ToString();
             f.Name = jsonSW["name"].ToString();
-            f.Height = (int)jsonSW["height"];
-            f.Mass = (int)jsonSW["mass"];
+            f.Height = jsonSW["height"].ToString();
+            f.Mass = jsonSW["mass"].ToString();
             f.HairColor = jsonSW["hair_color"].ToString();
             f.Films = jsonSW["films"].ToString();
-            
 
-            //if (jsonSW[")
+            //List<string> listEndpoints = new List<string>();
 
-            List<string> listEndpoints = new List<string>();
-
-            if (listEndpoints != null)
-            {
-                foreach (JToken jt in listEndpoints)
-                {
-                    f.People = jsonSW["people"].ToString();
-                    f.Name = jsonSW["name"].ToString();
-                    f.Height = (int)jsonSW["height"];
-                    f.Mass = (int)jsonSW["mass"];
-                    f.HairColor = jsonSW["hair_color"].ToString();
-                    f.Films = jsonSW["films"].ToString();
-
-                    listEndpoints.Add(jt.ToString());
-                }
-            }
-            ViewBag.FilmEndpoints = f;
+            //ViewBag.FilmEndpoints = f;
 
             return View(f);
         }

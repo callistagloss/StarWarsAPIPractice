@@ -1,11 +1,5 @@
-﻿@using StarWarsAPIPractice.Models;
+﻿@model StarWarsAPIPractice.Models.FilmEndpoints
 
-@{
-    FilmEndpoints f = ViewBag.FilmEndpoints;
-}
-<p>@f.Name</p>
-<p>@f.People</p>
-<p>@f.Height</p>
-<p>@f.Mass</p>
-
-   
+<p>@Model.Height</p>
+<p>@Model.HairColor</p>
+<p>@Model.Films</p>
